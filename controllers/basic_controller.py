@@ -9,7 +9,7 @@ class BasicMAC:
         self.n_agents = args.n_agents
         self.args = args
         input_shape = self._get_input_shape(scheme)
-        self._build_agents(input_shape) #
+        self._build_agents(input_shape) 
         self.agent_output_type = args.agent_output_type
 
         self.action_selector = action_REGISTRY[args.action_selector](args)
@@ -20,7 +20,8 @@ class BasicMAC:
         # Only select actions for the selected batch elements in bs
         avail_actions = ep_batch["avail_actions"][:, t_ep]
         agent_outputs = self.forward(ep_batch, t_ep, test_mode=test_mode)
-        chosen_actions = self.action_selector.select_action(agent_outputs[bs], avail_actions[bs], t_env, test_mode=test_mode)
+        chosen_actions = self.action_selector.select_action(agent_outputs[bs], avail_actions[bs], t_env, 
+                                                            test_mode=test_mode)
         return chosen_actions
 
     def forward(self, ep_batch, t, test_mode=False):
@@ -78,7 +79,7 @@ class BasicMAC:
         self.agent = agent_REGISTRY[self.args.agent](input_shape, self.args)
 
     def _build_inputs(self, batch, t):
-        # Assumes homogenous agents with flat observations.
+        # Assumes homogeneous agents with flat observations.
         # Other MACs might want to e.g. delegate building inputs to each agent
         bs = batch.batch_size
         inputs = []
