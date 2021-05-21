@@ -24,8 +24,8 @@ import config_util as cu
 if __name__ == '__main__':
     logger = get_logger()
     
-    algorithm = 'RNN_AGENT/qmix'
-    minigame = '3s_vs_5z'
+    algorithm = 'Role_Learning_Agent/qmix_smac_latent'
+    minigame = '2s3z'
 
     # Get all of the configuration such as maps, algorithms, hyper parameters, etc.
     config = cu.config_copy(cu.get_config(algorithm, minigame))
