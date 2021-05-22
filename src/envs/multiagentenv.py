@@ -1,5 +1,7 @@
 class MultiAgentEnv(object):
-
+    """
+    Parent class of the StarCraft2Env class in starcraft2.py
+    """
     def step(self, actions):
         """ Returns reward, terminated, info """
         raise NotImplementedError
