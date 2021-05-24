@@ -31,7 +31,7 @@ class QLearner:
             self.target_mixer = copy.deepcopy(self.mixer)
 
         #self.optimiser = RMSprop(params=self.params, lr=args.lr, alpha=args.optim_alpha, eps=args.optim_eps)
-        self.optimiser = Adam(params=self.params, lr=args.lr)
+        self.optimizer = Adam(params=self.params, lr=args.lr)
 
         self.target_mac = copy.deepcopy(mac)
 
@@ -161,10 +161,10 @@ class QLearner:
             loss = (masked_td_error ** 2).sum() / mask.sum()
 
         # Optimise
-        self.optimiser.zero_grad()
+        self.optimizer.zero_grad()
         loss.backward()
         grad_norm = th.nn.utils.clip_grad_norm_(self.params, self.args.grad_norm_clip)
-        self.optimiser.step()
+        self.optimizer.step()
 
         if (episode_num - self.last_target_update_episode) / self.args.target_update_interval >= 1.0:
             self._update_targets()
@@ -203,11 +203,11 @@ class QLearner:
         self.mac.save_models(path)
         if self.mixer is not None:
             th.save(self.mixer.state_dict(), f"{path}/mixer.th")
-        th.save(self.optimiser.state_dict(), f"{path}/opt.th")
+        th.save(self.optimizer.state_dict(), f"{path}/opt.th")
 
     def load_models(self, path):
         self.mac.load_models(path)
         self.target_mac.load_models(path)
         if self.mixer is not None:
             self.mixer.load_state_dict(th.load(f"{path}/mixer.th", map_location=lambda storage, loc: storage))
-        self.optimiser.load_state_dict(th.load(f"{path}/opt.th", map_location=lambda storage, loc: storage))
+        self.optimizer.load_state_dict(th.load(f"{path}/opt.th", map_location=lambda storage, loc: storage))

@@ -97,7 +97,7 @@ class EpisodeBatch:
                 target = self.data.episode_data
                 _slices = slices[0]
             else:
-                raise KeyError("{} not found in transition or episode data".format(k))
+                raise KeyError(f"{k} not found in transition or episode data")
 
             dtype = self.scheme[k].get("dtype", th.float32)
             v = th.tensor(v, dtype=dtype, device=self.device)
@@ -117,7 +117,7 @@ class EpisodeBatch:
         for s in dest.shape[::-1]:
             if v.shape[idx] != s:
                 if s != 1:
-                    raise ValueError("Unsafe reshape of {} to {}".format(v.shape, dest.shape))
+                    raise ValueError(f"Unsafe reshape of {v.shape} to {dest.shape}")
             else:
                 idx -= 1
 
@@ -137,7 +137,7 @@ class EpisodeBatch:
                 elif key in self.data.episode_data:
                     new_data.episode_data[key] = self.data.episode_data[key]
                 else:
-                    raise KeyError("Unrecognised key {}".format(key))
+                    raise KeyError(f"Unrecognized key {key}")
 
             # Update the scheme to only have the requested keys
             new_scheme = {key: self.scheme[key] for key in item}
@@ -199,10 +199,7 @@ class EpisodeBatch:
         return th.sum(self.data.transition_data["filled"], 1).max(0)[0]
 
     def __repr__(self):
-        return "EpisodeBatch. Batch Size:{} Max_seq_len:{} Keys:{} Groups:{}".format(self.batch_size,
-                                                                                     self.max_seq_length,
-                                                                                     self.scheme.keys(),
-                                                                                     self.groups.keys())
+        return f"EpisodeBatch. Batch Size:{self.batch_size} Max_seq_len:{self.max_seq_length} Keys:{self.scheme.keys()} Groups:{ self.groups.keys()}"
 
 
 class ReplayBuffer(EpisodeBatch):
@@ -260,12 +257,7 @@ class ReplayBuffer(EpisodeBatch):
             return self[self.buffer_index - batch_size: self.buffer_index]
 
     def __repr__(self):
-        return "ReplayBuffer. {}/{} episodes. Keys:{} Groups:{}".format(self.episodes_in_buffer,
-                                                                        self.buffer_size,
-                                                                        self.scheme.keys(),
-                                                                        self.groups.keys())
-
-
+        return f"ReplayBuffer. {self.episodes_in_buffer}/{self.buffer_size} episodes. Keys:{self.scheme.keys()} Groups:{self.groups.keys()}"
 
 class Best_experience_Buffer(EpisodeBatch):
     def __init__(self, scheme, groups, buffer_size, max_seq_length, preprocess=None, device="cpu"):
