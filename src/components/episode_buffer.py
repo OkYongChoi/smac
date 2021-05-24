@@ -54,7 +54,7 @@ class EpisodeBatch:
         })
 
         for field_key, field_info in scheme.items():
-            assert "vshape" in field_info, "Scheme must define vshape for {}".format(field_key)
+            assert "vshape" in field_info, f"Scheme must define vshape for {field_key}"
             vshape = field_info["vshape"]
             episode_const = field_info.get("episode_const", False)
             group = field_info.get("group", None)
@@ -64,7 +64,7 @@ class EpisodeBatch:
                 vshape = (vshape,)
 
             if group:
-                assert group in groups, "Group {} must have its number of members defined in _groups_".format(group)
+                assert group in groups, f"Group {group} must have its number of members defined in _groups_"
                 shape = (groups[group], *vshape)
             else:
                 shape = vshape
