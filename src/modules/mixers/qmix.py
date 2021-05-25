@@ -5,6 +5,9 @@ import numpy as np
 
 
 class QMixer(nn.Module):
+    """
+    Mixing Network is implemented as the hypernetworks.
+    """
     def __init__(self, args):
         super(QMixer, self).__init__()
 
