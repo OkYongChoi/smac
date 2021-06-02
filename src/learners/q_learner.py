@@ -37,6 +37,7 @@ class QLearner:
 
         self.log_stats_t = -self.args.learner_log_interval - 1
 
+    #Main training part of q-learner
     def train(self, batch: EpisodeBatch, t_env: int, episode_num: int):
         # Get the relevant quantities
         rewards = batch["reward"][:, :-1]
@@ -140,7 +141,7 @@ class QLearner:
             lambda_local = self.args.lambda_local
             loss = global_loss + lambda_local * local_loss
 
-        else:
+        else: # If the mixer is not graphmix
             # Mix
             if self.mixer is not None:
                 chosen_action_qvals = self.mixer(chosen_action_qvals, batch["state"][:, :-1])
@@ -160,7 +161,7 @@ class QLearner:
             # Normal L2 loss, take mean over actual data
             loss = (masked_td_error ** 2).sum() / mask.sum()
 
-        # Optimise
+        # Optimize
         self.optimizer.zero_grad()
         loss.backward()
         grad_norm = th.nn.utils.clip_grad_norm_(self.params, self.args.grad_norm_clip)
