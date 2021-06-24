@@ -2,7 +2,7 @@
 
 # --- pymarl options ---
 runner: "episode" # Runs 1 env for an episode
-mac: "basic_mac" # Basic controller
+mac: "basic_mac" # Basic controller {basic_mac, separate_mac, rode_mac, noise_mac}
 env: "sc2" # Environment name
 env_args: {} # Arguments for the environment
 batch_size_run: 1 # Number of environments to run in parallel

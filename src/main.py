@@ -23,7 +23,8 @@ import config_util as cu
 if __name__ == '__main__':
     logger = get_logger()
     
-    algorithm = 'RNN_Agent/qmix'
+    algorithm = 'RNN_Agent/hysteretic_q'
+    #algorithm = 'RNN_Agent/iql'
     minigame = '2s3z'
 
     # Get all of the configuration such as maps, algorithms, hyper parameters, etc.
