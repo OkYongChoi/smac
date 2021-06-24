@@ -32,6 +32,8 @@ class QLearner:
 
         self.optimizer = Adam(params=self.params, lr=args.lr)
 
+
+
         self.target_mac = copy.deepcopy(mac)
 
         self.log_stats_t = -self.args.learner_log_interval - 1
@@ -45,7 +47,6 @@ class QLearner:
         mask = batch["filled"][:, :-1].float()
         mask[:, 1:] = mask[:, 1:] * (1 - terminated[:, :-1])
         avail_actions = batch["avail_actions"]
-
         # Calculate estimated Q-Values
         mac_out = []
         hidden_states = []
@@ -101,10 +102,6 @@ class QLearner:
 
         # 0-out the targets that came from padded data
         masked_td_error = td_error * mask
-        # print(f'td_error: {td_error.shape}')
-        # print(f'mask: {mask.shape}')
-        # print(f'masked_td_error: {masked_td_error.shape}')
-        # print(f"mask_sum: {mask.sum()}")
         
         # Normal L2 loss, take mean over actual data
         if masked_td_error.sum() > 0:
