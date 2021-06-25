@@ -105,7 +105,7 @@ class QLearner:
         
         # Normal L2 loss, take mean over actual data
         if masked_td_error.sum() > 0:
-            loss = (masked_td_error ** 2).sum() / mask.sum()
+            loss = 2*(masked_td_error ** 2).sum() / mask.sum()
         else:
             loss = 0.5*(masked_td_error ** 2).sum() / mask.sum()
 
