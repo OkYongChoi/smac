@@ -21,21 +21,21 @@ def get_config(algorithm, minigame):
     
     with open("config/envs/sc2_beta.yaml", "r") as f:
         try:
-            config_envs_dict = yaml.load(f)
+            config_envs_dict = yaml.load(f, Loader=yaml.SafeLoader)
         except yaml.YAMLError as exc:
             assert False, f"sc2.yaml error: {exc}"
         env_config = config_envs_dict
 
     with open("config/default.yaml","r") as f:
         try:
-            default_config = yaml.load(f)
+            default_config = yaml.load(f, Loader=yaml.SafeLoader)
         except yaml.YAMLError as exc:
             assert False, f"default.yaml error: {exc}"
 
     # The below block depends on each algorithm    
     with open(f"config/algs/{algorithm}.yaml", "r") as f:
         try:
-            config_algs_dict = yaml.load(f)
+            config_algs_dict = yaml.load(f, yaml.SafeLoader)
         except yaml.YAMLError as exc:
             assert False, f"sc2.yaml error: {exc}"
         alg_config = config_algs_dict

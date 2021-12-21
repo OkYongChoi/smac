@@ -27,7 +27,7 @@ class G2ANet(nn.Module):
         self.k = nn.Linear(self.rnn_hidden_dim, self.attention_dim, bias=False)
         self.v = nn.Linear(self.rnn_hidden_dim, self.attention_dim)
 
-        self.device = 'cuda:{0}'.format(self.args.device_num) if torch.cuda.is_available() else 'cpu'
+        self.device = f'cuda:{self.args.device_num}'.format() if torch.cuda.is_available() else 'cpu'
 
         # Decoding
         self.decoding = nn.Linear(self.rnn_hidden_dim + self.attention_dim, args.n_actions)
