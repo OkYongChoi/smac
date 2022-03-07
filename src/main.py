@@ -1,31 +1,24 @@
-'''
-Algorithm setting method: algorithm = config/algs 
-E.g.
-QMIX of rnn agent: algorithm = 'RNN_AGENT/qmix_beta'
-COMA of G2ANet agent: algorithm = 'G2ANet_Agent/coma'
-
-Mini game setting method: refer to the envs/starcraft2/maps/smac_maps.py
-Description:
-3 marines vs 3 marines: minigame = '3m'
-2 zealots 3 stalkers vs 2 zealots 3 stalkers -> '2s3z'
-'''
-
 import numpy as np
 import torch as th
 from utils.logging import get_logger
 import random
 from run import standard_run, offpg_run
 import config_util as cu
-
-
-
+import argparse
 
 if __name__ == '__main__':
-    logger = get_logger()
+    parser = argparse.ArgumentParser()
+
+    # Choose algorithms from config/algs 
+    parser.add_argument('--algorithm','-a', default = 'RNN_AGENT/qmix')
+    # Refer to the envs/starcraft2/maps/smac_maps.py for the map setting
+    parser.add_argument('--game', '-g', default = '2s3z')
+    args = parser.parse_args()
     
-    algorithm = 'RNN_Agent/hysteretic_q'
-    #algorithm = 'RNN_Agent/iql'
-    minigame = '2s3z'
+    logger = get_logger()
+
+    algorithm = args.algorithm
+    minigame = args.game
 
     # Get all of the configuration such as maps, algorithms, hyper parameters, etc.
     config = cu.config_copy(cu.get_config(algorithm, minigame))
